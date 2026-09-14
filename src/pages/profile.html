@@ -3,28 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Details</title>
+    <title>Profile - Bookstore</title>
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/layout.css">
 </head>
 <body>
-
-<main class="container">
-        <a href="../../index.html" class="btn btn-secondary mb-4">&larr; Back to Books</a>
-        <div class="detail-header flex-between">
-            <h1 id="book-title">Loading...</h1>
-            <div id="admin-controls"></div>
+    <main class="container" style="max-width: 600px; margin-top: 4rem;">
+        <div class="card" style="padding: 2.5rem;">
+            <h1 style="margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">My Profile</h1>
+            <div id="content">
+                <!-- User details injected here -->
+            </div>
         </div>
-        <div id="content"></div>
     </main>
 
-    <!-- Global scripts instead of modules -->
     <script src="../js/config.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/ui.js"></script>
-    <script src="../js/pages/book-detail.js"></script>
+    <script src="../js/pages/profile.js"></script>
 </body>
 </html>
-

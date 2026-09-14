@@ -16,7 +16,7 @@ async function loadAuthors() {
                     <a href="./author-detail.html?id=${author.id}" style="text-decoration: none;">
                         <h3 class="card-title" style="color: #fff; transition: color 0.3s;" onmouseover="this.style.color='var(--primary-hover)'" onmouseout="this.style.color='#fff'">${author.name}</h3>
                     </a>
-                    <p class="card-subtitle mb-4" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-top: 0.5rem;">
+                    <p class="card-subtitle mb-4" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-top: 0.5rem; word-break: break-word;">
                         ${author.bio || 'No bio available.'}
                     </p>
                 </div>
@@ -27,3 +27,4 @@ async function loadAuthors() {
     }
 }
 loadAuthors();
+renderAdminListControls(document.getElementById('admin-controls'), 'author');

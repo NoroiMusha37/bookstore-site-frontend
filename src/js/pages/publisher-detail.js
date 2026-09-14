@@ -45,13 +45,14 @@ async function loadPublisherDetail() {
                 </div>
                 <div class="detail-section">
                     <h3>About the Publisher</h3>
-                    <p class="mt-4" style="color: var(--text-muted);">${publisher.description || 'No description available.'}</p>
+                    <p class="mt-4" style="color: var(--text-muted); white-space: pre-wrap; word-break: break-word;">${publisher.description || 'No description available.'}</p>
                 </div>
             </div>
             
             <h2 class="mb-4">Books Published by ${publisher.name}</h2>
             ${booksHtml}
         `;
+        renderAdminDetailControls(document.getElementById('admin-controls'), 'publisher', id);
     } catch (error) {
         showError(container, error.message);
     }

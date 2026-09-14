@@ -11,14 +11,57 @@
 <body>
 
 <main class="container">
-        <div class="flex-between">
-            <h1>Books</h1>
-        </div>
-        <div id="content" class="grid"></div>
-    </main>
+    <div class="flex-between" style="margin-bottom: 2rem;">
+        <h1>Books</h1>
+        <div id="admin-controls"></div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 250px 1fr; gap: 2rem; align-items: start;">
+        <aside class="filters-sidebar" style="background: var(--card-bg); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border-color);">
+            <h3 style="margin-bottom: 1rem;">Filters</h3>
+            <form id="filter-form">
+                <div style="margin-bottom: 1rem;">
+                    <label for="search" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Search</label>
+                    <input type="text" id="search" name="search" placeholder="Title or Author" style="width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: white;">
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <label for="ordering" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Sort By</label>
+                    <select id="ordering" name="ordering" style="width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: white;">
+                        <option value="-popularity_score">Popularity (High to Low)</option>
+                        <option value="popularity_score">Popularity (Low to High)</option>
+                        <option value="price">Price (Low to High)</option>
+                        <option value="-price">Price (High to Low)</option>
+                        <option value="genre">Genre (A-Z)</option>
+                        <option value="-genre">Genre (Z-A)</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Publishers</label>
+                    <div id="publisher-filters" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 150px; overflow-y: auto;">
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">Loading...</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Genres</label>
+                    <div id="genre-filters" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 150px; overflow-y: auto;">
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">Loading...</span>
+                    </div>
+                </div>
+                
+                <button type="submit" style="width: 100%; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.3s;">Apply Filters</button>
+            </form>
+        </aside>
+        
+        <div id="content" class="grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));"></div>
+    </div>
+</main>
 
     <!-- Global scripts instead of modules -->
     <script src="./src/js/config.js"></script>
+    <script src="./src/js/auth.js"></script>
     <script src="./src/js/api.js"></script>
     <script src="./src/js/ui.js"></script>
     <script src="./src/js/pages/books.js"></script>

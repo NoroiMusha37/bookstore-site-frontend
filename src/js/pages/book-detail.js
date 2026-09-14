@@ -32,16 +32,18 @@ async function loadBookDetail() {
                         <span class="badge" style="background: rgba(148,163,184,0.15); color: #cbd5e1; border-color: rgba(148,163,184,0.3);">Year: ${book.publication_year}</span>
                     </div>
                     <h3>Description</h3>
-                    <p class="mt-4" style="color: var(--text-muted);">${book.description || 'No description available.'}</p>
+                    <p class="mt-4" style="color: var(--text-muted); white-space: pre-wrap; word-break: break-word;">${book.description || 'No description available.'}</p>
                 </div>
                 <div class="flex-between" style="align-items: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
                     <div>
                         <span style="font-size: 0.875rem; color: var(--text-muted);">Price</span><br>
                         <span class="price" style="font-size: 2rem;">$${book.price}</span>
                     </div>
+                    <div id="admin-controls"></div>
                 </div>
             </div>
         `;
+        renderAdminDetailControls(document.getElementById('admin-controls'), 'book', id);
     } catch (error) {
         showError(container, error.message);
     }

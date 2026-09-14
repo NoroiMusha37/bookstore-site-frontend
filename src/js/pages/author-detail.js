@@ -45,13 +45,14 @@ async function loadAuthorDetail() {
                 </div>
                 <div class="detail-section">
                     <h3>Biography</h3>
-                    <p class="mt-4" style="color: var(--text-muted);">${author.bio || 'No biography available.'}</p>
+                    <p class="mt-4" style="color: var(--text-muted); white-space: pre-wrap; word-break: break-word;">${author.bio || 'No biography available.'}</p>
                 </div>
             </div>
             
             <h2 class="mb-4">Books by ${author.name}</h2>
             ${booksHtml}
         `;
+        renderAdminDetailControls(document.getElementById('admin-controls'), 'author', id);
     } catch (error) {
         showError(container, error.message);
     }
