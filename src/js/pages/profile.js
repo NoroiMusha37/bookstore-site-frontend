@@ -4,7 +4,7 @@ renderNavbar('profile');
 async function loadProfile() {
     const container = document.getElementById('content');
     const user = await auth.getUser();
-    
+
     if (!user) {
         showError(container, 'Could not load profile. Please try logging in again.');
         return;
@@ -46,9 +46,17 @@ async function loadProfile() {
                     <button id="edit-profile-btn" class="btn btn-warning" style="padding: 0.5rem 1rem;">Edit Profile</button>
                 </div>
             </div>
+            
+            <div id="order-history" style="margin-top: 3rem;">
+                <h2 style="margin-bottom: 1.5rem;">Order History</h2>
+                <div id="orders-container" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <span style="color: var(--text-muted);">Loading orders...</span>
+                </div>
+            </div>
         `;
 
         document.getElementById('edit-profile-btn').addEventListener('click', renderEditMode);
+        loadOrders();
     }
 
     function renderEditMode() {
@@ -95,13 +103,13 @@ async function loadProfile() {
             const btn = document.getElementById('save-profile-btn');
             const errContainer = document.getElementById('profile-error');
             errContainer.innerHTML = '';
-            
+
             btn.textContent = 'Saving...';
             btn.disabled = true;
 
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
-            
+
             // Remove empty password so it isn't updated to blank
             if (!data.password) {
                 delete data.password;
@@ -128,6 +136,71 @@ async function loadProfile() {
     }
 
     renderDisplayMode();
+}
+
+async function loadOrders() {
+    const container = document.getElementById('orders-container');
+    if (!container) return; // Might not be on display mode
+    try {
+        const orders = await api.getOrders();
+        if (orders.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-muted)">No orders found.</p>';
+            return;
+        }
+
+        container.innerHTML = orders.map(order => `
+            <div class="card" style="padding: 1rem;">
+                <div class="flex-between" style="cursor: pointer;" onclick="toggleOrderDetails('${order.id}')">
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <div>
+                            <strong style="color: var(--primary);">Order #${order.id.split('-')[0]}</strong>
+                            <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 0.5rem;">${new Date(order.created_at).toLocaleString()}</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace; display: inline-flex; align-items: center; gap: 0.25rem;" title="Click to copy" onclick="event.stopPropagation(); navigator.clipboard.writeText('${order.id}'); alert('Order ID copied to clipboard!');">
+                            <span style="opacity: 0.7;">ID: ${order.id}</span>
+                            <span style="cursor: pointer; opacity: 0.5; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">📋</span>
+                        </div>
+                    </div>
+                    <strong style="font-size: 1.1rem;">$${order.total_price}</strong>
+                </div>
+                <div id="order-details-${order.id}" style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                    <div style="text-align: center; color: var(--text-muted);">Loading details...</div>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        showError(container, "Failed to load orders: " + (error.message || "Unknown error"));
+    }
+}
+
+window.toggleOrderDetails = async function(orderId) {
+    const detailsContainer = document.getElementById(`order-details-${orderId}`);
+    if (detailsContainer.style.display === 'block') {
+        detailsContainer.style.display = 'none';
+        return;
+    }
+    
+    detailsContainer.style.display = 'block';
+    
+    if (detailsContainer.innerHTML.includes('Loading details...')) {
+        try {
+            const order = await api.getOrderDetails(orderId);
+            detailsContainer.innerHTML = order.items.map(item => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <div>
+                        <a href="./book-detail.html?id=${item.book}" style="color: #fff; text-decoration: none;">${item.book_title}</a>
+                        <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 0.5rem;">x${item.quantity}</span>
+                    </div>
+                    <span>$${item.item_total}</span>
+                </div>
+            `).join('');
+            if (order.items.length === 0) {
+                detailsContainer.innerHTML = '<span style="color: var(--text-muted);">No items found for this order.</span>';
+            }
+        } catch (error) {
+            detailsContainer.innerHTML = '<span style="color: #fca5a5;">Failed to load order details.</span>';
+        }
+    }
 }
 
 loadProfile();

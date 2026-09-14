@@ -4,7 +4,7 @@ async function loadBookDetail() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     const container = document.getElementById('content');
-    
+
     if (!id) {
         showError(container, "No book ID provided in URL.");
         return;
@@ -13,7 +13,7 @@ async function loadBookDetail() {
     showLoading(container);
     try {
         const book = await api.getBook(id);
-        
+
         container.innerHTML = `
             <div class="card">
                 <div class="detail-header">
@@ -39,11 +39,51 @@ async function loadBookDetail() {
                         <span style="font-size: 0.875rem; color: var(--text-muted);">Price</span><br>
                         <span class="price" style="font-size: 2rem;">$${book.price}</span>
                     </div>
-                    <div id="admin-controls"></div>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <div id="admin-controls"></div>
+                        ${auth.isAuthenticated() ? `
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="number" id="detail-qty-${book.id}" value="1" min="1" style="width: 60px; padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: white;" ${!book.in_stock ? 'disabled' : ''}>
+                            <button id="detail-add-to-cart-btn" class="btn btn-primary" data-id="${book.id}" ${!book.in_stock ? 'disabled style="background: var(--text-muted);"' : ''}>
+                                ${book.in_stock ? 'Add to Cart' : 'Out of Stock'}
+                            </button>
+                        </div>
+                        ` : ''}
+                    </div>
                 </div>
             </div>
         `;
         renderAdminDetailControls(document.getElementById('admin-controls'), 'book', id);
+
+        if (auth.isAuthenticated()) {
+            const addBtn = document.getElementById('detail-add-to-cart-btn');
+            if (addBtn) {
+                addBtn.addEventListener('click', async (e) => {
+                    const bookId = e.target.dataset.id;
+                    const qtyInput = document.getElementById(`detail-qty-${bookId}`);
+                    const quantity = parseInt(qtyInput.value) || 1;
+                    const originalText = e.target.textContent;
+                    
+                    e.target.disabled = true;
+                    e.target.textContent = 'Adding...';
+                    
+                    try {
+                        await api.addCartItem({ book: bookId, quantity: quantity });
+                        e.target.textContent = 'Added ✓';
+                        e.target.style.background = '#34d399';
+                        setTimeout(() => {
+                            e.target.textContent = originalText;
+                            e.target.style.background = '';
+                            e.target.disabled = false;
+                        }, 2000);
+                    } catch (err) {
+                        alert(err.message || "Failed to add to cart. It may already be there.");
+                        e.target.textContent = originalText;
+                        e.target.disabled = false;
+                    }
+                });
+            }
+        }
     } catch (error) {
         showError(container, error.message);
     }

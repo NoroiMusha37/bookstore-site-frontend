@@ -1,6 +1,6 @@
 async function fetchAPI(endpoint, options = {}) {
   const url = `${CONFIG.API_BASE_URL}${endpoint}`;
-  
+
   const headers = {
     'Content-Type': 'application/json',
     ...options.headers
@@ -8,7 +8,7 @@ async function fetchAPI(endpoint, options = {}) {
 
   const token = localStorage.getItem('accessToken');
   if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   try {
@@ -18,20 +18,20 @@ async function fetchAPI(endpoint, options = {}) {
     });
 
     if (response.status === 401) {
-       // Clear tokens and redirect to login
-       localStorage.removeItem('accessToken');
-       localStorage.removeItem('refreshToken');
-       localStorage.removeItem('userCache');
-       const isPagesDir = window.location.pathname.includes('/src/pages/');
-       window.location.href = `${isPagesDir ? '../../' : './'}src/pages/login.html`;
-       throw new Error('Unauthorized');
+      // Clear tokens and redirect to login
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('userCache');
+      const isPagesDir = window.location.pathname.includes('/src/pages/');
+      window.location.href = `${isPagesDir ? '../../' : './'}src/pages/login.html`;
+      throw new Error('Unauthorized');
     }
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw errorData; // return raw error for field validation
     }
-    
+
     if (response.status === 204) {
       return null;
     }
@@ -68,4 +68,16 @@ const api = {
 
   getMe: () => fetchAPI('/me/'),
   updateMe: (data) => fetchAPI('/me/', { method: 'PATCH', body: JSON.stringify(data) }),
+
+  // Cart
+  getCart: () => fetchAPI('/me/cart/'),
+  clearCart: () => fetchAPI('/me/cart/', { method: 'DELETE' }),
+  addCartItem: (data) => fetchAPI(`/me/cart/items/`, { method: 'POST', body: JSON.stringify(data) }),
+  updateCartItem: (bookId, data) => fetchAPI(`/me/cart/items/${bookId}/`, { method: 'PATCH', body: JSON.stringify(data) }),
+  removeCartItem: (bookId) => fetchAPI(`/me/cart/items/${bookId}/`, { method: 'DELETE' }),
+
+  // Orders
+  getOrders: () => fetchAPI('/me/orders/'),
+  getOrderDetails: (id) => fetchAPI(`/me/orders/${id}/`),
+  checkout: () => fetchAPI('/me/orders/', { method: 'POST' }),
 };
