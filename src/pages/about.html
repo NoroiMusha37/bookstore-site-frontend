@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Bookstore</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+</head>
+<body>
+    <main class="container">
+        <div class="flex-between">
+            <h1>About Us</h1>
+        </div>
+        
+        <div class="grid mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title" style="margin-bottom: 1rem; font-size: 1.5rem;">Contact Information</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;"><strong>Email:</strong> support@bookstore.com</p>
+                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;"><strong>Phone:</strong> +380 (44) 123-45-67</p>
+                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;"><strong>Address:</strong> vul. Skovorody, 2, Kyiv, Ukraine</p>
+                    <p style="color: var(--text-muted);"><strong>Working Hours:</strong> Mon-Fri, 09:00 - 18:00</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title" style="margin-bottom: 1rem; font-size: 1.5rem;">Delivery Information</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;">
+                        We deliver across all regions of Ukraine through our logistics partners (Nova Poshta and Ukrposhta).
+                    </p>
+                    <ul style="color: var(--text-muted); list-style-position: inside; line-height: 1.8;">
+                        <li><strong>Standard Delivery:</strong> 2-4 business days.</li>
+                        <li><strong>Express Delivery:</strong> Next business day.</li>
+                        <li><strong>Free Shipping:</strong> Available on all orders over $50.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title" style="margin-bottom: 1rem; font-size: 1.5rem;">Returns & Refunds</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 0.75rem;">
+                        We guarantee the quality of our books. If you are not satisfied, we are here to help.
+                    </p>
+                    <ul style="color: var(--text-muted); list-style-position: inside; line-height: 1.8;">
+                        <li>You have <strong>14 days</strong> from receipt to return physical items.</li>
+                        <li>Books must be unread and in their original pristine condition.</li>
+                        <li>Refunds are processed to the original payment method within 3-5 days.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Global scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/ui.js"></script>
+    <script>
+        renderNavbar('about');
+    </script>
+</body>
+</html>
