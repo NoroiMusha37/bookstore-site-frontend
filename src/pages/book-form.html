@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Form - Bookstore</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+</head>
+<body>
+    <main class="container" style="max-width: 800px; margin-top: 4rem;">
+        <div class="card" style="padding: 2.5rem;">
+            <div class="flex-between" style="border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 2rem;">
+                <h1 id="page-title">Book</h1>
+                <a href="../../index.html" class="btn btn-secondary">Cancel</a>
+            </div>
+            
+            <div id="error-container"></div>
+            
+            <form id="entity-form" style="display: none;">
+                <div class="grid form-group" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label class="form-label">Title *</label>
+                        <input type="text" name="title" id="field-title" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Genre</label>
+                        <input type="text" name="genre" id="field-genre" class="form-control">
+                    </div>
+                </div>
+
+                <div class="grid form-group" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label class="form-label">Author * (Type to search)</label>
+                        <input list="authors-list" name="author_name" id="field-author" class="form-control" required>
+                        <datalist id="authors-list"></datalist>
+                    </div>
+                    <div>
+                        <label class="form-label">Publisher * (Type to search)</label>
+                        <input list="publishers-list" name="publisher_name" id="field-publisher" class="form-control" required>
+                        <datalist id="publishers-list"></datalist>
+                    </div>
+                </div>
+
+                <div class="grid form-group" style="grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                    <div>
+                        <label class="form-label">Price *</label>
+                        <input type="number" name="price" id="field-price" step="0.01" min="0" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Pop. Score *</label>
+                        <input type="number" name="popularity_score" id="field-pop" step="1" min="0" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Year *</label>
+                        <input type="number" name="publication_year" id="field-year" min="0" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Pages *</label>
+                        <input type="number" name="pages" id="field-pages" min="0" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); cursor: pointer;">
+                        <input type="checkbox" name="in_stock" id="field-stock" checked style="width: 1.2rem; height: 1.2rem; cursor: pointer;">
+                        In Stock
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" id="field-description" rows="6" class="form-control"></textarea>
+                </div>
+                
+                <button type="submit" id="submit-btn" class="btn btn-primary btn-block">Save</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/pages/book-form.js"></script>
+</body>
+</html>
